@@ -2,6 +2,10 @@
 
 <template>
 <div>
+    <h1>Welcome to  my fucking Task List</h1>
+    <router-view></router-view>
+</div>
+<!-- <div>
     <h1>Welcome to the Vue Task App</h1>
 <div>
   <SingIn v-if="component"/>
@@ -11,20 +15,20 @@
 <div class="button-singup">
     <button @click="changeComponent" v-if="component">Click to Sing Up</button>
     <button @click="changeComponent" v-else="component">Click to Sing In</button>
-</div>
+</div> -->
 </template>
 
 <script setup>
-import { ref } from "vue";
-import SingIn from "../components/SignIn.vue"
-import SingUp from "../components/SignUp.vue"
-import router from "../router";
+// import { ref } from "vue";
+// import SingIn from "../components/SignIn.vue"
+// import SingUp from "../components/SignUp.vue"
+// import router from "../router";
 
-const component = ref(true);
+// const component = ref(true);
 
-function changeComponent(){
-    component.value = !component.value;
-}
+// function changeComponent(){
+//     component.value = !component.value;
+// }
 </script>
 
 <style>

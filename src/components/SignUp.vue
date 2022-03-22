@@ -6,7 +6,7 @@
   <h3>Sing Up</h3>
   
     <div>
-    <label class="labe">Email</label><br>
+    <label class="label">Email</label><br>
     <input id="email" type="email" name="email" required placeholder="Email" v-model="email"> <br>
     
     <label class="label">Password</label><br>
@@ -15,7 +15,7 @@
     <label for="ConfirmPassword" class="label">Confirm password</label><br>
     <input id="confirmPassword" name="confirmPassword" type="password" required placeholder="Repeat your password" v-model="confirmPassword"><br>
 
-    <div v-if="register" >
+    <div v-if="errorMsg" >
       <p>{{errorMsg}}</p>
     </div>
 
@@ -23,6 +23,11 @@
   
     </div>
   </form>
+  
+ <p>Already have an account ? <RouteAuth 
+  :route="route"
+  :buttonText="buttonText"/></p>
+
 </section>
 </div>
 </template>
@@ -31,12 +36,15 @@
 import { ref } from 'vue'
 import { supabase } from '../supabase'
 import { useRouter } from 'vue-router'
+import RouteAuth from "../components/RouteAuth.vue"
 
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
 const errorMsg = ref("");
 const router = useRouter();
+const route = "/auth"
+const buttonText = "Sign In"
 
 const register = async () => {
   console.log(email.value)
@@ -48,7 +56,7 @@ const register = async () => {
         password: password.value,
       });
       if (error) throw error;
-      router.push('/Auth');
+      router.push('/');
     } catch (error) {
       errorMsg.value = error.message;
       setTimeout(() => {

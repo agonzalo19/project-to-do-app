@@ -13,16 +13,22 @@
     <label class="label">Password</label><br>
     <input id="password" name="password" type="password" required placeholder="Choose your password" v-model="password"><br>
 
-    <div v-if="register" >
+    <div v-if="errorMsg" >
       <p>{{errorMsg}}</p>
     </div>
 
     <button type="submit">Sign In</button>
-    
+  
     </div>
   </div>
- 
+
   </form>
+
+  <p>Don't have an account? <RouteAuth 
+  :route="route"
+  :buttonText="buttonText"/></p>
+
+
 </section>
 </div>
 </template>
@@ -32,11 +38,14 @@
 import { ref } from 'vue'
 import { supabase } from '../supabase'
 import { useRouter } from 'vue-router'
+import  RouteAuth  from '../components/RouteAuth.vue'
 
 const email = ref("");
 const password = ref("");
 const errorMsg = ref("");
 const router = useRouter();
+const route = "/auth/sign-up"
+const buttonText = "Sign Up"
 
 const login = async () => {
   try{
