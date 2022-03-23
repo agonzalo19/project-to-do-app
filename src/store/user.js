@@ -11,7 +11,7 @@ export const useUserStore = defineStore("user", {
       this.user = user;
     },
 
-//  Nos ppermite registrar un usuario email i pasword en  base de datos
+    //  Nos ppermite registrar un usuario email i pasword en  base de datos
     async signUp(email, password) {
       //console.log("asdfasdfasdf");
       const { user, error } = await supabase.auth.signUp({
@@ -24,10 +24,14 @@ export const useUserStore = defineStore("user", {
         console.log(this.user);
       }
     },
-//Falta definir i pintar en el componente de signIn
-    signIn(){},
-//Falta definir i pintar en el componente de signOut
-    signOut(){},
+    //Falta definir i pintar en el componente de signIn
+
+    //Falta definir i pintar en el componente de signOut
+
+    async signOut() {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    },
 
     persist: {
       enabled: true,
@@ -40,12 +44,3 @@ export const useUserStore = defineStore("user", {
     },
   },
 });
-
-
-
-
-
-
-
-
-

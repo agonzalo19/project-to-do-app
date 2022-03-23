@@ -1,8 +1,9 @@
 // Añadir + signIn + signOut + titulo 
 
 <template>
-<div>
-    <h1>Welcome to  my fucking Task List</h1>
+<div class="min-h-full font-Pippins box">
+    <!-- <Nav /> -->
+    <h1 class="btn-prymary">Welcome to my fucking Task List</h1>
     <router-view></router-view>
 </div>
 <!-- <div>
@@ -19,7 +20,9 @@
 </template>
 
 <script setup>
-// import { ref } from "vue";
+import { ref } from "vue";
+// import  Nav  from "../components/Nav.vue";
+
 // import SingIn from "../components/SignIn.vue"
 // import SingUp from "../components/SignUp.vue"
 // import router from "../router";

@@ -56,7 +56,6 @@ const login = async () => {
       if (error) throw error;
       router.push('/');
     } catch (error) {
-      console.log("hola");
       errorMsg.value = error.message;
       setTimeout(() => {
         errorMsg.value = null;

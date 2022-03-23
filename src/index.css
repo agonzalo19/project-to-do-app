@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-prymary {
+  @apply text-blue-800 px-4 text-2xl;
+}
