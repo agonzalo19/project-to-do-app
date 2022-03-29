@@ -1,17 +1,17 @@
 import { defineStore } from "pinia";
 import { supabase } from "../supabase";
+
 export const useUserStore = defineStore("user", {
   state: () => ({
     user: null,
   }),
-  //Comprovar en la base de datos si existe el usuario
+
   actions: {
     async fetchUser() {
       const user = await supabase.auth.user();
       this.user = user;
     },
 
-    //  Nos ppermite registrar un usuario email i pasword en  base de datos
     async signUp(email, password) {
       //console.log("asdfasdfasdf");
       const { user, error } = await supabase.auth.signUp({
@@ -24,9 +24,19 @@ export const useUserStore = defineStore("user", {
         console.log(this.user);
       }
     },
-    //Falta definir i pintar en el componente de signIn
 
-    //Falta definir i pintar en el componente de signOut
+    //Sign IN
+    async signIn(email, password) {
+      const { user, error } = await supabase.auth.signIn({
+        email: email,
+        password: password,
+      });
+      if (error) throw error;
+      if (user) {
+        this.user = user;
+        console.log(this.user);
+      }
+    },
 
     async signOut() {
       const { error } = await supabase.auth.signOut();

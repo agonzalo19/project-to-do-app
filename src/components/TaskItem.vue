@@ -1,4 +1,9 @@
 <template>
+ <div class="grid place-content-center my-5">
+    <h1 class="text-3xl">Welcome {{ }}!</h1>
+    <br />
+</div>
+
   <form @submit.prevent="addTodo">
     <input
       class="w-300px h-8 border border-gray-special/50 rounded p-2"
@@ -23,8 +28,12 @@
     {{ hideCompleted ? "Show all" : "Hide completed" }}
   </button>
 </template>
+// 
 <script setup>
+
 import { ref, computed } from "vue";
+import { useUserStore } from "../store/user";
+
 let id = 0;
 const newTodo = ref("");
 const hideCompleted = ref(false);
@@ -32,6 +41,7 @@ const todos = ref([{ id: id++, text: "", done: true }]);
 const filteredTodos = computed(() => {
   return hideCompleted.value ? todos.value.filter((t) => !t.done) : todos.value;
 });
+
 function addTodo() {
   todos.value.push({ id: id++, text: newTodo.value, done: false });
   newTodo.value = "";
@@ -40,6 +50,7 @@ function removeTodo(todo) {
   todos.value = todos.value.filter((t) => t !== todo);
 }
 </script>
+
 <style scoped>
 .done {
   text-decoration: line-through;

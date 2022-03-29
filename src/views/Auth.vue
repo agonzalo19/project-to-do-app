@@ -3,7 +3,7 @@
 <template>
 <div class="min-h-full font-Pippins box">
     <!-- <Nav /> -->
-    <h1 class="btn-prymary">Welcome to my fucking Task List</h1>
+    <h1 class="text-3xl pt-10  mb-5 flex justify-center"> My fucking Task List</h1>
     <router-view></router-view>
 </div>
 <!-- <div>
