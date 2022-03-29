@@ -14,8 +14,7 @@ export const useTaskStore = defineStore("tasks", {
         .from("tasks")
         .select("*")
         .order("is_complete", { ascending: true });
-      this.tasks = tasks;
-      return this.tasks;
+      return (this.tasks = tasks);
     },
 
     // Insert Task

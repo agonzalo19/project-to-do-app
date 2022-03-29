@@ -1,14 +1,31 @@
 <template>
+
 <div>
-<form @submit.prevent="addTask" >
-    <h3>que te pillao</h3>
+<h3>Fuck List</h3>
+
+<form class="mx-auto my-20 p-5 rounded-md bg-gray-100 shadow-lg w-3/4 justify-center flex flex-col items-center gap-y-5" action="" >
+   <div class="flex flex-col sm:flex-row justify-center items-center my-5 gap-10 w-full"></div>
+   <label class="font-mono text-xl" for="name">New Todo</label>
    <input
       class="w-300px h-8 border border-gray-special/50 rounded p-2"
-      v-model="newTask"
+      v-model="newTodo"
     />
-<button @click="createTask">Add Task</button> 
+<button class="block w-full btn-template bg-blue-500 sm:inline sm:w-32 hover:bg-blue-600"
+        @click.prevent="addTodo">Add Task</button> 
   </form>
-    <!-- <span>{{ newTask }}</span>  -->
+
+ <!-- <p v-if="newTodo.length < 4"  class="font-mono text-red-600 font-bold ml-10">
+      {{ newTodoErr }} </p> -->
+
+  <div class="flex flex-col sm:flex-row gap-5 items-center justify-center my-10">
+    <section v-for="(todo, i) in datosTask" :key="'todo' + i">
+      <div>
+        <span>{{ todo.title }}</span>
+      </div>
+    </section>
+
+  </div>
+
   </div>
 </template>
 
@@ -17,36 +34,30 @@ import { useUserStore } from "../store/user";
 import { useTaskStore } from "../store/task";
 import { ref, computed } from 'vue';
 import { supabase } from "../supabase";
-// // import TaskItemVue from "./TaskItem.vue";
-// // import router from "../router";
-// import { useRouter } from "vue-router";
 
-const newTask =ref("");
-const myTasks = ([]);
+const newTodo =ref("");
+const todos = ([]);
 const errorMsg = ref ("");
-const storeTasks = useTaskStore();
-// const router = useRouter()
-//const user = useUserStore()
+const taskStore = useTaskStore();
+// const newTodoErr = ref("Please, write a word with more than three characters");
+
 let datosTask = ref([]);
 
-
 async function fetchAllTask(){
-    const thisTask = await storeTasks.fetchTasks();
-    console.log(myTasks);
+    const thisTask = await taskStore.fetchTasks();
     datosTask.value = thisTask;
-}
- fetchAllTask();
 
-async function createTask(){
+}
+     fetchAllTask();
+
+
+async function addTodo(){
     
-    await storeTasks.addTask(newTask.value);
-    
+    await taskStore.addTask(newTodo.value);
     await fetchAllTask();
-    newTask.value = "";
+    newTodo.value = "";
 }
-
 </script>
 
 <style>
-
 </style>
