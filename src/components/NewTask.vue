@@ -12,6 +12,7 @@
    <input
       class="w-300px h-8 border border-gray-special/50 rounded p-2"
       v-model="newTodo"
+      v-on:keyup.enter="addTodo"
       placeholder="Put your fuck task"/>
     <button class="block w-full btn-template bg-green-500 sm:inline sm:w-32 hover:bg-green-600" @click.prevent="addTodo">Add Task</button> 
   </form>
@@ -22,20 +23,21 @@
   <div class="flex flex-col sm:flex-row gap-5 items-center justify-center my-10">
     
     <div v-for="(todo, i) in datosTask" :key="'todo' + i">
-          <span :class="{completed: todo.is_complete}">{{ todo.title }}</span>
+          <span :class="{completed: todo.is_complete}">{{ todo.title }} </span>
           <div>
 
             <!-- Edit button -->
           <div>
             <button @click="changeState">📝</button>
             <input v-if="isEditing" v-model= "todo.title"/>
-            <button @click="saveEdit">Save</button>
+            <button @click="saveEdit(todo)">Save</button>
             </div>
           
+            <!-- Delete button -->
           <button @click="removeTodo(todo)">🗑️</button>
           
-           
-          <button ></button>
+             <!-- Complate button -->
+          <button @click="completedTask(todo)">Completado</button>
           </div>
     </div>
 
@@ -86,15 +88,6 @@ async function addTodo(){
     newTodo.value = "";
 }
 
-
-// async function editTodo(i) {
-//     isEditing.value = true;
-//     editingId.value = datosTask.value[i].id;
-//     newTodo.value = datosTask.value[i].title; 
-// }
-
-
-
 // Change State
 async function changeState() {
   isEditing.value = true;
@@ -120,6 +113,7 @@ async function completedTask(todo) {
   await taskStore.isComplete(indexId, todo.is_complete);
   await fetchAllTask()
 }
+
 </script>
 
 <style>
