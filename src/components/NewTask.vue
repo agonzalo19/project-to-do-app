@@ -1,7 +1,7 @@
 <template>
 
 <div class="justify-center flex flex-col ">
-<h3 class="text-2xl text-at-light-green">Fuck List</h3>
+<!-- <h3 class="text-2xl text-at-light-green">Fuck List</h3> -->
 
 <!-- New task -->
 
@@ -11,12 +11,13 @@
    <input
       class="py-2 px-5 text-gray-500 focus:outline-none rounded-sm"
       v-model="newTodo"
-      v-on:keyup.enter="addTodo"
+     
       placeholder="Put your fuck task"/>
     <button
     class=" flex py-2 px-10 rounded-sm self-start text-sm
       text-white bg-at-light-green duration-200 border-solid
-      border-2 border-transparent hover:border-at-light-green hover:bg-white
+      border-2 border-transparent
+      hover:border-at-light-green hover:bg-white
       hover:text-at-light-green items-center"
     type="text"
     @click.prevent="addTodo">Add Task</button> 
@@ -26,26 +27,27 @@
       {{ newTodoErr }} </p> -->
 </form>
 
-<div class="p-30 my-5 p-5 mx-auto space-x-20 flex flex-row sm:flex-row items-center justify-center rounded-md bg-at-light-green text-white shadow-lg "
+<div class="mx-auto my-20 p-10 rounded-md bg-gray-100 shadow-lg justify-center flex flex-row items-center gap-y-5 space-x-20"
 v-for="(todo, i) in datosTask" :key="'todo' + i"
 >
 
-          <span :class="{completed: todo.is_complete}" class="text-center sm:w-1/2 mb-1 text-xl text-white">{{ todo.title }} </span>
+          <span :class="{completed: todo.is_complete}" class="text-center sm:w-1/2 mb-1 text-xl text-at-light-green ">Task: {{ todo.title }} </span>
          
             <!-- Edit button -->
           <div class="flex flex-row items-center gap-y-5 space-x-20">
           <div>
-            <button class="" @click="changeState">Edit📝</button>
+            <button class="grayscale text-gren-light
+            hover:grayscale-0" @click="changeState">Edit ✏️</button>
             <input v-if="isEditing" v-model= "todo.title"/>
           </div>
 
           <button @click="saveEdit(todo)">Save</button>
           
             <!-- Delete button -->
-          <button @click="removeTodo(todo)">Delete🗑️</button>
+          <button class="lex-no-shrink p-2 ml-2 rounded text-red hover:text-white hover:bg-red" @click="removeTodo(todo)">Delete 🗑️</button>
           
              <!-- Complate button -->
-          <button @click="completedTask(todo)">Completado</button>
+          <button class= "grayscale hover:grayscale-0" @click="completedTask(todo)"> Done ✅</button>
           </div>
 
 
@@ -91,8 +93,8 @@ async function fetchAllTask(){
 async function addTodo(){
     
     await taskStore.addTask(newTodo.value);
-    await fetchAllTask();
     console.log("hola");
+    await fetchAllTask();
     newTodo.value = "";
 }
 

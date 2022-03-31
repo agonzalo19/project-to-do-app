@@ -6,6 +6,7 @@ module.exports = {
         "at-light-green": "#44ba9f",
         "at-green": "#286d5d",
         "light-grey": "#f1f1f1",
+        red: "#d61139",
       },
     },
     fontFamily: {
