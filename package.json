@@ -9,11 +9,8 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^1.31.1",
-    "@vuelidate/core": "^2.0.0-alpha.35",
-    "@vuelidate/validators": "^2.0.0-alpha.27",
     "pinia": "^2.0.12",
     "pinia-plugin-persist": "^1.0.0",
-    "vee-validate": "^4.5.10",
     "vue": "^3.2.25",
     "vue-router": "^4.0.14"
   },

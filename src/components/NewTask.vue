@@ -27,60 +27,49 @@
       {{ newTodoErr }} </p> -->
 </form>
 
-<div class="mx-auto my-20 p-10 rounded-md bg-gray-100 shadow-lg justify-center flex flex-row items-center gap-y-5 space-x-20"
-v-for="(todo, i) in datosTask" :key="'todo' + i"
->
+<!-- TaskItem > insert import Child functions -->
 
-          <span :class="{completed: todo.is_complete}" class="text-center sm:w-1/2 mb-1 text-xl text-at-light-green ">Task: {{ todo.title }} </span>
-         
-            <!-- Edit button -->
-          <div class="flex flex-row items-center gap-y-5 space-x-20">
-          <div>
-            <button class="grayscale text-gren-light
-            hover:grayscale-0" @click="changeState">Edit ✏️</button>
-            <input v-if="isEditing" v-model= "todo.title"/>
-          </div>
-
-          <button @click="saveEdit(todo)">Save</button>
-          
-            <!-- Delete button -->
-          <button class="lex-no-shrink p-2 ml-2 rounded text-red hover:text-white hover:bg-red" @click="removeTodo(todo)">Delete 🗑️</button>
-          
-             <!-- Complate button -->
-          <button class= "grayscale hover:grayscale-0" @click="completedTask(todo)"> Done ✅</button>
-          </div>
-
-
-    </div>
-
-  </div>
-
+<TaskItem 
+v-for="(todo, index) in datosTask" 
+:key="todo.id"
+:item="todo"
+@childEmit="saveEdit"
+/>
+</div>
 </template>
 
 <script setup>
-import { useUserStore } from "../store/user";
-import { useTaskStore } from "../store/task";
 import { ref, computed } from 'vue';
 import { supabase } from "../supabase";
+
+import { useUserStore } from "../store/user";
+import { useTaskStore } from "../store/task";
+
 import { useRoute } from "vue-router";
 
+import  TaskItem  from "./TaskItem.vue";
+
+//To register in supabase
+
 const newTodo =ref("");
-const todos = ([]);
-const errorMsg = ref ("");
-let datosTask = ref([]);
+const todos = ([]); // No se usa ?
+let datosTask = ref([]); // Nuevo array
 
 const taskStore = useTaskStore();
 const user = useUserStore();
 const router = useRoute();
 
-const isEditing = ref(false);
-const editingId = ref('');
+// Los uso en Task Item
+// const errorMsg = ref ("");
 
-const isCompleted = ref(false)
+// const isEditing = ref(false);
+// const editingId = ref('');
+
+// const isCompleted = ref(false)
 // const newTodoErr = ref("Please, write a word with more than three characters");
 
 
-
+// Function to  fetch task from Supabase using Pinia
 async function fetchAllTask(){
     const thisTask = await taskStore.fetchTasks();
     datosTask.value = thisTask;
@@ -98,31 +87,35 @@ async function addTodo(){
     newTodo.value = "";
 }
 
-// Change State
-async function changeState() {
-  isEditing.value = true;
-}
+// __________
+
+// // Change State
+// async function changeState() {
+//   isEditing.value = true;
+// }
 
 // Edit Task
-async function saveEdit(item){
-  await taskStore.editTask(item.title, item.id)
-  isEditing.value = false;
-  await fetchAllTask()
+
+async function saveEdit(item) {
+  const newTaskTitle = item.newValue;
+  const editId = item.oldValue.id;
+  await storeTasks.editTask(newTaskTitle, editId);
+  fetchAllTasks();
 }
 
-// Remove Task
-async function removeTodo(task) {
-  await taskStore.removeTodo(task.id);
-  await fetchAllTask()
-}
+// // Remove Task
+// async function removeTodo(task) {
+//   await taskStore.removeTodo(task.id);
+//   await fetchAllTask()
+// }
 
-//Complate Task
-async function completedTask(todo) {
-  const indexId = todo.id
-  todo.is_complete = !todo.is_complete
-  await taskStore.isComplete(indexId, todo.is_complete);
-  await fetchAllTask()
-}
+// //Complate Task
+// async function completedTask(todo) {
+//   const indexId = todo.id
+//   todo.is_complete = !todo.is_complete
+//   await taskStore.isComplete(indexId, todo.is_complete);
+//   await fetchAllTask()
+// }
 
 </script>
 
