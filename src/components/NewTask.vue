@@ -1,45 +1,53 @@
 <template>
 
-<div>
-<h3>Fuck List</h3>
+<div class="justify-center flex flex-col ">
+<h3 class="text-2xl text-at-light-green">Fuck List</h3>
 
-<form class="mx-auto my-20 p-5 rounded-md bg-gray-100 shadow-lg w-3/4 justify-center flex flex-col items-center gap-y-5" action="" >
-   <div class="flex flex-col sm:flex-row justify-center items-center my-5 gap-10 w-full"></div>
-   <label class="font-mono text-xl" for="name">New Task</label>
-   
-   <!-- New task -->
+<!-- New task -->
 
+<form class="mx-auto my-20 p-10 rounded-md bg-gray-100 shadow-lg justify-center flex flex-row items-center gap-y-5 space-x-20" action="" >
+
+   <label class="text-2xl text-at-light-green" for="name">New Task</label>
    <input
-      class="w-300px h-8 border border-gray-special/50 rounded p-2"
+      class="py-2 px-5 text-gray-500 focus:outline-none rounded-sm"
       v-model="newTodo"
       v-on:keyup.enter="addTodo"
       placeholder="Put your fuck task"/>
-    <button class="block w-full btn-template bg-green-500 sm:inline sm:w-32 hover:bg-green-600" @click.prevent="addTodo">Add Task</button> 
-  </form>
+    <button
+    class=" flex py-2 px-10 rounded-sm self-start text-sm
+      text-white bg-at-light-green duration-200 border-solid
+      border-2 border-transparent hover:border-at-light-green hover:bg-white
+      hover:text-at-light-green items-center"
+    type="text"
+    @click.prevent="addTodo">Add Task</button> 
+
 
  <!-- FALTA LLAMAR AL ERROR <p v-if="newTodo.length < 4"  class="font-mono text-red-600 font-bold ml-10">
       {{ newTodoErr }} </p> -->
+</form>
 
-  <div class="flex flex-col sm:flex-row gap-5 items-center justify-center my-10">
-    
-    <div v-for="(todo, i) in datosTask" :key="'todo' + i">
-          <span :class="{completed: todo.is_complete}">{{ todo.title }} </span>
-          <div>
+<div class="p-30 my-5 p-5 mx-auto space-x-20 flex flex-row sm:flex-row items-center justify-center rounded-md bg-at-light-green text-white shadow-lg "
+v-for="(todo, i) in datosTask" :key="'todo' + i"
+>
 
+          <span :class="{completed: todo.is_complete}" class="text-center sm:w-1/2 mb-1 text-xl text-white">{{ todo.title }} </span>
+         
             <!-- Edit button -->
+          <div class="flex flex-row items-center gap-y-5 space-x-20">
           <div>
-            <button @click="changeState">📝</button>
+            <button class="" @click="changeState">Edit📝</button>
             <input v-if="isEditing" v-model= "todo.title"/>
-            <button @click="saveEdit(todo)">Save</button>
-            </div>
+          </div>
+
+          <button @click="saveEdit(todo)">Save</button>
           
             <!-- Delete button -->
-          <button @click="removeTodo(todo)">🗑️</button>
+          <button @click="removeTodo(todo)">Delete🗑️</button>
           
              <!-- Complate button -->
           <button @click="completedTask(todo)">Completado</button>
           </div>
-    </div>
+
 
     </div>
 
