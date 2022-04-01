@@ -2,22 +2,27 @@
   <!-- TaskItem -->
 
   <div
-    class="mx-auto my-10 p-5 rounded-md bg-gray-100 shadow-lg flex flex-row items-center gap-y-1 space-x-20"
+    class="container mx-auto my-10 p-5 justify-between rounded-md bg-white shadow-lg flex flex-row items-center gap-y-1 space-x-20"
   >
     <div v-if="editDialog">
-      <input class="" v-model="editTask" type="text" />
+      <input
+        class="px-4 py-2 rounded-sm border-solid border-2 border-pink bg-white hover:bg-grey"
+        v-model="editTask"
+        type="text"
+      />
     </div>
 
     <div v-else>
-      <span class="text-center sm:w-1/2 mb-1 text-xl text-purple">
+      <span class="truncate text-center sm:w-1/2 mb-1 text-xl text-purple">
         {{ item.title }}
       </span>
     </div>
-    <div v-if="item.is_complete">Done ✅</div>
 
     <div class="flex flex-row items-center space-x-20">
       <!-- ToggleEdit button -->
       <button
+        v-if="!editDialog"
+        id="editButton"
         class="lex-no-shrink p-2 ml-2 rounded hover:text-white hover:bg-pink"
         @click="toggleEdit()"
       >
@@ -31,24 +36,39 @@
           class="lex-no-shrink p-2 ml-2 rounded hover:text-white hover:bg-pink"
           @click.prevent="edit()"
         >
-          Save
+          Save the queen!
         </button>
         <p>{{ errorInput }}</p>
       </div>
 
       <!-- Delete button  -->
       <button
+        v-if="!editDialog"
         class="lex-no-shrink p-2 ml-2 rounded hover:text-white hover:bg-red"
         @click="remove()"
       >
         Delete 🗑️
       </button>
-      <button
-        class="lex-no-shrink p-2 ml-2 rounded hover:text-white hover:bg-at-light-green"
-        @click="toggleTask()"
-      >
-        Fuck yeah
-      </button>
+      <div v-if="!item.is_complete">
+        <button
+          v-if="!editDialog"
+          class="lex-no-shrink p-2 ml-2 rounded hover:text-white hover:bg-at-light-green"
+          @click="toggleTask()"
+        >
+          Done!
+        </button>
+      </div>
+      <div v-if="item.is_complete">✅</div>
+      <div v-if="!item.is_complete" class="grayscale">✅</div>
+      <div v-if="item.is_complete">
+        <button
+          v-if="!editDialog"
+          class="lex-no-shrink p-2 ml-2 rounded hover:text-white hover:bg-at-light-green"
+          @click="toggleTask()"
+        >
+          Undone
+        </button>
+      </div>
     </div>
   </div>
 </template>

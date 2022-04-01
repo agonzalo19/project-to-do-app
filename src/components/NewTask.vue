@@ -1,21 +1,21 @@
 <template>
-  <div class="justify-center flex flex-col">
+  <div class="bg-midium-grey justify-center flex flex-col">
     <!-- <h3 class="text-2xl text-at-light-green">Fuck List</h3> -->
 
     <!-- New task -->
 
     <form
-      class="mx-auto my-10 p-10 rounded-md bg-gray-100 shadow-lg justify-center flex flex-row items-center gap-y-5 space-x-20"
+      class="mx-auto my-10 p-10 rounded-md bg-white shadow-lg justify-center flex flex-row items-center gap-y-5 space-x-10"
       action=""
     >
       <!-- <label class="text-2xl text-at-light-green" for="name">New Task</label> -->
       <input
-        class="border-pink rounded-sm border-solid border-2 bg-gray-100 hover:bg-white text-indigo focus:border-pink border-2 text-purple px-2 py-1"
+        class="pl-4 px-10 py-4 pr-30 rounded-sm border-solid border-2 border-pink bg-white hover:bg-grey focus:border-pink border-2 text-purple"
         v-model="newTodo"
-        placeholder="Add your task"
+        placeholder="+ Add your pending task"
       />
       <button
-        class="flex py-2 px-10 rounded-sm self-start text-sm text-white bg-purple duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green items-center"
+        class="flex px-4 py-4 rounded-sm text-white bg-purple duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green items-center"
         type="text"
         @click.prevent="addTodo"
       >

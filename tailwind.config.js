@@ -6,6 +6,7 @@ module.exports = {
         "at-light-green": "#44ba9f",
         "at-green": "#44ba9f",
         "light-grey": "#f1f1f1",
+        "midium-grey": "#E9E9E9",
         red: "#d61139",
         indigo: "#4b0082",
         pink: "#ffc0cb",
