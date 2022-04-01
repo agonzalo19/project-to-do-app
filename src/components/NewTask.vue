@@ -1,45 +1,60 @@
 <template>
+  <div class="justify-center flex flex-col">
+    <!-- <h3 class="text-2xl text-at-light-green">Fuck List</h3> -->
 
-<div class="justify-center flex flex-col ">
-<!-- <h3 class="text-2xl text-at-light-green">Fuck List</h3> -->
+    <!-- New task -->
 
-<!-- New task -->
-
-<form class="mx-auto my-20 p-10 rounded-md bg-gray-100 shadow-lg justify-center flex flex-row items-center gap-y-5 space-x-20" action="" >
-
-   <label class="text-2xl text-at-light-green" for="name">New Task</label>
-   <input
-      class="py-2 px-5 text-gray-500 focus:outline-none rounded-sm"
-      v-model="newTodo"
-     
-      placeholder="Put your fuck task"/>
-    <button
-    class=" flex py-2 px-10 rounded-sm self-start text-sm
-      text-white bg-at-light-green duration-200 border-solid
-      border-2 border-transparent
-      hover:border-at-light-green hover:bg-white
-      hover:text-at-light-green items-center"
-    type="text"
-    @click.prevent="addTodo">Add Task</button> 
-
-
- <!-- FALTA LLAMAR AL ERROR <p v-if="newTodo.length < 4"  class="font-mono text-red-600 font-bold ml-10">
+    <form
+      class="mx-auto my-10 p-10 rounded-md bg-gray-100 shadow-lg justify-center flex flex-row items-center gap-y-5 space-x-20"
+      action=""
+    >
+      <!-- <label class="text-2xl text-at-light-green" for="name">New Task</label> -->
+      <input
+        class="border-pink rounded-sm border-solid border-2 bg-gray-100 hover:bg-white text-indigo focus:border-pink border-2 text-purple px-2 py-1"
+        v-model="newTodo"
+        placeholder="Add your task"
+      />
+      <button
+        class="flex py-2 px-10 rounded-sm self-start text-sm text-white bg-purple duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green items-center"
+        type="text"
+        @click.prevent="addTodo"
+      >
+        Add Task
+      </button>
+      <p v-if="emptyNew" class="font-mono text-red-600 font-bold ml-10">
+        {{ errorInput }}
+      </p>
+      <!-- FALTA LLAMAR AL ERROR <p v-if="newTodo.length < 4"  class="font-mono text-red-600 font-bold ml-10">
       {{ newTodoErr }} </p> -->
-</form>
+    </form>
 
-<!-- TaskItem > insert import Child functions -->
+    <!-- TaskItem > insert import Child functions -->
 
-<TaskItem 
-v-for="(todo, index) in datosTask" 
-:key="todo.id"
-:item="todo"
-@childEmit="saveEdit"
-/>
-</div>
+    <TaskItem
+      v-for="(todo, index) in datosTask"
+      :key="todo.id"
+      :item="todo"
+      @childEdit="saveEdit"
+      @childRemove="remove"
+      @childToggle="toggleTask"
+    />
+
+    <blockquote
+      class="text-2xl p-10 font-semibold italic text-center text-slate-900"
+    >
+      Don't stress, your
+      <span
+        class="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-pink relative inline-block"
+      >
+        <span class="relative text-white">fucking to-do list </span>
+      </span>
+      can wait for you.
+    </blockquote>
+  </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed } from "vue";
 import { supabase } from "../supabase";
 
 import { useUserStore } from "../store/user";
@@ -47,77 +62,67 @@ import { useTaskStore } from "../store/task";
 
 import { useRoute } from "vue-router";
 
-import  TaskItem  from "./TaskItem.vue";
+import TaskItem from "./TaskItem.vue";
 
 //To register in supabase
 
-const newTodo =ref("");
-const todos = ([]); // No se usa ?
+const newTodo = ref("");
+const todos = []; // No se usa ?
 let datosTask = ref([]); // Nuevo array
 
-const taskStore = useTaskStore();
+const storeTasks = useTaskStore();
 const user = useUserStore();
 const router = useRoute();
 
-// Los uso en Task Item
-// const errorMsg = ref ("");
-
-// const isEditing = ref(false);
-// const editingId = ref('');
-
-// const isCompleted = ref(false)
-// const newTodoErr = ref("Please, write a word with more than three characters");
-
+let emptyNew = ref(false); // error box initially hidden
+let errorInput = ref(""); // error message variable
 
 // Function to  fetch task from Supabase using Pinia
-async function fetchAllTask(){
-    const thisTask = await taskStore.fetchTasks();
-    datosTask.value = thisTask;
-
+async function fetchAllTasks() {
+  const thisTask = await useTaskStore().fetchTasks();
+  datosTask.value = thisTask;
 }
-     fetchAllTask();
+fetchAllTasks();
 
 // Add Task
 
-async function addTodo(){
-    
-    await taskStore.addTask(newTodo.value);
-    console.log("hola");
-    await fetchAllTask();
+async function addTodo() {
+  if (newTodo.value === "") {
+    emptyNew.value = true; // shows error
+    errorInput.value = "New Todo field cannot be empty";
+    setTimeout(() => {
+      emptyNew.value = false; // hides error
+    }, 3000);
+  } else {
+    emptyNew.value = false;
+    await useTaskStore().addTask(newTodo.value);
+    await fetchAllTasks();
     newTodo.value = "";
+  }
 }
-
-// __________
-
-// // Change State
-// async function changeState() {
-//   isEditing.value = true;
-// }
 
 // Edit Task
 
 async function saveEdit(item) {
   const newTaskTitle = item.newValue;
   const editId = item.oldValue.id;
-  await storeTasks.editTask(newTaskTitle, editId);
+  await useTaskStore().editTask(newTaskTitle, editId);
   fetchAllTasks();
 }
 
-// // Remove Task
-// async function removeTodo(task) {
-//   await taskStore.removeTodo(task.id);
-//   await fetchAllTask()
-// }
+// Function to remove currentTask
+async function remove(item) {
+  await useTaskStore().removeTask(item.id);
+  fetchAllTasks();
+}
 
-// //Complate Task
-// async function completedTask(todo) {
-//   const indexId = todo.id
-//   todo.is_complete = !todo.is_complete
-//   await taskStore.isComplete(indexId, todo.is_complete);
-//   await fetchAllTask()
-// }
-
+//Complete Tasks between done & undone [true or false]
+async function toggleTask(item) {
+  const toggleComplete = !item.is_complete;
+  const toggleId = item.id;
+  await useTaskStore().isComplete(toggleComplete, toggleId);
+  fetchAllTasks();
+}
 </script>
 
-<style>
-</style>
+<style></style>

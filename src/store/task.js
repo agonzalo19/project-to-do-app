@@ -40,29 +40,17 @@ export const useTaskStore = defineStore("tasks", {
     },
 
     // Delete Task
-    async removeTodo(item) {
+    async removeTask(item) {
       const { data, error } = await supabase
         .from("tasks")
         .delete()
         .match({ id: item });
       if (error) throw error;
     },
-    // const { data, error } = await supabase
-    //         .from('tasks')
-    //         .update({ is_complete: bool })
-    //         .match({ id: id })
-    // },
 
-    // async toggleDone(bool, id) {
-    //     const { data, error } = await supabase
-    //         .from('tasks')
-    //         .update({ is_complete: bool })
-    //         .match({ id: id })
-    // },
+    // Complete Task
 
-    // Complate Task
-
-    async isComplete(taskId, status) {
+    async isComplete(status, taskId) {
       const { data, error } = await supabase
         .from("tasks")
         .update({ is_complete: status })
@@ -72,18 +60,11 @@ export const useTaskStore = defineStore("tasks", {
 
     // // Uncomplate Task
 
-    // async allUndone() {
+    // async unDone(taskId, status) {
     //   const { data, error } = await supabase
     //     .from("tasks")
     //     .update({ is_complete: false })
     //     .match({ is_complete: true });
     // },
-
-    // // Remove Task
-    // async removeToodo() {
-    //   const { data, error } = await supabase
-    //     .from("tasks")
-    //     .delete()
-    //     .match({ user_id: useUserStore().user.id });
   },
 });

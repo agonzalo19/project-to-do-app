@@ -2,38 +2,53 @@
   <!-- TaskItem -->
 
   <div
-    class="mx-auto my-20 p-10 rounded-md bg-gray-100 shadow-lg justify-center flex flex-row items-center gap-y-5 space-x-20"
+    class="mx-auto my-10 p-5 rounded-md bg-gray-100 shadow-lg flex flex-row items-center gap-y-1 space-x-20"
   >
-    <div v-if="editDialog"><input v-model="editTask" type="text" /></div>
+    <div v-if="editDialog">
+      <input class="" v-model="editTask" type="text" />
+    </div>
+
     <div v-else>
-      <span class="text-center sm:w-1/2 mb-1 text-xl text-at-light-green">
-        Task: {{ item.title }}
+      <span class="text-center sm:w-1/2 mb-1 text-xl text-purple">
+        {{ item.title }}
       </span>
     </div>
-    <!-- Que mostrar cuendo la tarea is complete
-  <div v-if="item.is_complete">Done</div> -->
+    <div v-if="item.is_complete">Done ✅</div>
 
-    <div class="flex flex-row items-center gap-y-5 space-x-20">
+    <div class="flex flex-row items-center space-x-20">
       <!-- ToggleEdit button -->
       <button
-        class="grayscale text-gren-light hover:grayscale-0"
+        class="lex-no-shrink p-2 ml-2 rounded hover:text-white hover:bg-pink"
         @click="toggleEdit()"
       >
         Edit ✏️
       </button>
+
+      <!-- Save Edit button -->
+
       <div v-if="editDialog">
-        <button @click.prevent="edit()">Save</button>
+        <button
+          class="lex-no-shrink p-2 ml-2 rounded hover:text-white hover:bg-pink"
+          @click.prevent="edit()"
+        >
+          Save
+        </button>
         <p>{{ errorInput }}</p>
       </div>
 
-      <!-- SaveEdit button 
-    <button @click=""> Save</button>
-          
- Delete button 
-     <button class="lex-no-shrink p-2 ml-2 rounded text-red hover:text-white hover:bg-red" @click="">Delete 🗑️</button>
-          
-  Complate button 
-    <button class= "grayscale hover:grayscale-0" @click=""> Done ✅</button> -->
+      <!-- Delete button  -->
+      <button
+        class="lex-no-shrink p-2 ml-2 rounded hover:text-white hover:bg-red"
+        @click="remove()"
+      >
+        Delete 🗑️
+      </button>
+      <button
+        class="lex-no-shrink p-2 ml-2 rounded hover:text-white hover:bg-at-light-green"
+        @click="toggleTask()"
+      >
+        Fuck yeah
+      </button>
     </div>
   </div>
 </template>
@@ -55,7 +70,7 @@ let errorInput = ref(""); // error message variable
 
 //IMPORTANT! Define children Functionos
 
-const emit = defineEmits(["childEmit"]);
+const emit = defineEmits(["childEdit", "childRemove", "childToggle"]);
 
 // IMPORTANT! Set up the content of the template as an array prop to be used on the parent
 const props = defineProps(["item"]);
@@ -78,14 +93,25 @@ function edit() {
   if (editTask.value === "") errorHandle();
   else {
     empty.value = false;
-    editDialog = false; // que quiere decir que se muestra
+    editDialog.value = false; // que quiere decir que se muestra
     const editValues = {
       oldValue: props.item,
       newValue: editTask.value,
     };
-    emit("childEmit", editValues);
-    editTask.value = "";
+    emit("childEdit", editValues);
+    editDialog.value = false;
   }
+}
+
+//Function to remove items
+
+function remove() {
+  emit("childRemove", props.item);
+}
+
+// Toggle Done & Undone
+function toggleTask() {
+  emit("childToggle", props.item);
 }
 </script>
 
